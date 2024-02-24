@@ -1,5 +1,6 @@
 package _06_overloading;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -17,14 +18,20 @@ import javax.swing.JPanel;
  */
 public class LeagueOptionPane {
 
-	static JFrame frame = new JFrame("Message");
-	static JPanel panel = new JPanel () ;
-	static JLabel image = new JLabel();
-	static JLabel text = new JLabel();
+	static JFrame frame;
+	static JPanel panel;
+	static JLabel image;
+	static JLabel text;
 
 	public static void showMessageDialog(String message) {
 		// 1. Open example.png and make a GUI that looks like that
 		// The message parameter is what we want to show on our pop-up
+
+		frame = new JFrame("Message");
+		panel = new JPanel();
+		image = new JLabel();
+		text = new JLabel();
+
 		frame.setVisible(true);
 		frame.add(panel);
 		panel.add(image);
@@ -34,7 +41,7 @@ public class LeagueOptionPane {
 		frame.pack();
 		// 2. Uncomment the line of code below. It sets the location of our frame to the
 		// center of the screen
-		// frame.setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(null);
 	}
 
 	// 3. Call this method in the Runner class
@@ -42,14 +49,44 @@ public class LeagueOptionPane {
 	// 4. Create another showMessageDialog() method that lets us also choose the
 	// Message and Title
 	// 2 String parameters (one for the message and one for the title)
+	public static void showMessageDialog(String message, String title) {
 
+		frame = new JFrame(title);
+		panel = new JPanel();
+		image = new JLabel();
+		text = new JLabel();
+
+		frame.setVisible(true);
+		frame.add(panel);
+		panel.add(image);
+		panel.add(text);
+		image.setIcon(loadImage("league.png"));
+		text.setText(message);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+	}
 	// 5. Call this method in the Runner class
 
 	// 6. Create another showMessageDialog() method that lets us choose the Message,
 	// Title, and Image
 	// 3 String parameters (one for the message, one for the title, and one for the
 	// fileName)
+	public static void showMessageDialog(String message, String title, String imageLocation) {
 
+		frame = new JFrame(title);
+		panel = new JPanel();
+		image = new JLabel();
+		text = new JLabel();
+
+		frame.setVisible(true);
+		frame.add(panel);
+		panel.add(image);
+		panel.add(text);
+		image.setIcon(loadImage(imageLocation));
+		text.setText(message);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+	}
 	// 7. Call this method in the Runner class
 
 	// CHALLENGE:
@@ -57,6 +94,26 @@ public class LeagueOptionPane {
 	// Title, Image, and Background Color
 	// 3 String parameters (one for the message, one for the title, and one for the
 	// fileName)
+
+	public static JPanel showMessageDialog(String message, String title, String imageLocation, Color color) {
+
+		frame = new JFrame(title);
+		panel = new JPanel();
+		image = new JLabel();
+		text = new JLabel();
+
+		frame.setVisible(true);
+		frame.add(panel);
+		panel.add(image);
+		panel.add(text);
+		panel.setBackground(color);
+		image.setIcon(loadImage(imageLocation));
+		text.setText(message);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		
+		return panel;
+	}
 	// 1 Color parameter for the backgroundColor
 	//
 	// 2. Change the return type of the 3rd showMessageDialog() method(the one right
