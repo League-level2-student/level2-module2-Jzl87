@@ -31,7 +31,7 @@ public class LeagueSnake extends PApplet {
 	 */
 	@Override
 	public void settings() {
-		setSize(500, 500);
+		setSize(WIDTH, HEIGHT); // CHANGE
 	}
 
 	@Override
@@ -39,14 +39,14 @@ public class LeagueSnake extends PApplet {
 		head = new Segment(250, 250);
 		frameRate(10);
 		dropFood();
-		drawSnake();
+		//drawSnake(); CHANGE
 	}
 
 	void dropFood() {
 		// Set the food in a new random location
 		
-		foodX = ran.nextInt(50) * 10;
-		foodY = ran.nextInt(50) * 10;
+		foodX = ran.nextInt(80) * 10;
+		foodY = ran.nextInt(80) * 10;
 	}
 
 	/*
@@ -61,8 +61,8 @@ public class LeagueSnake extends PApplet {
 		drawFood();
 		move();
 		drawSnake();
-		eat();
 		manageTail();
+		eat();
 	}
 
 	void drawFood() {
@@ -77,6 +77,8 @@ public class LeagueSnake extends PApplet {
 
 		fill(0, 255, 0);
 		rect(head.x, head.y, 10, 10);
+		
+		drawTail(); // CHANGE
 	}
 
 	void drawTail() {
@@ -98,7 +100,7 @@ public class LeagueSnake extends PApplet {
 		// remove the one at the "end"
 		// This produces the illusion of the snake tail moving.
 		checkTailCollision();
-		drawTail();
+		// drawTail(); CHANGE
 		tail.add(new Segment(head.x, head.y));
 		tail.remove(0);
 
@@ -107,7 +109,9 @@ public class LeagueSnake extends PApplet {
 	void checkTailCollision() {
 		// If the snake crosses its own tail, shrink the tail back to one segment
 		for (int x =0; x<tail.size(); x++) {
-			if (tail.get(x).getX() == head.getX() && tail.get(x).getY() == head.getY() && tail.size() > 4) {
+			if (tail.get(x).x == head.x && tail.get(x).y == head.y) {
+				tail.removeAll(tail);
+				foodEaten = 0;
 			}
 		}
 	}
@@ -121,7 +125,7 @@ public class LeagueSnake extends PApplet {
 	@Override
 	public void keyPressed() {
 		// Set the direction of the snake according to the arrow keys pressed
-		System.out.println(keyCode);
+		//System.out.println(keyCode);
 		if (keyCode == UP && direction != DOWN) {
 			direction = UP;
 		
@@ -153,15 +157,18 @@ public class LeagueSnake extends PApplet {
 
 	void checkBoundaries() {
 		// If the snake leaves the frame, make it reappear on the other side
-		if (head.x > 500) {
-			head.x = 0;
-		} else if (head.x < 0) {
-			head.x = 500;
-		} else if (head.y > 500) {
-			head.y = 0;
-		} else if (head.y < 0) {
-			head.y = 500;
-		}
+		if(head.y<0) {
+        	head.y=HEIGHT;
+        }
+        if(head.y>HEIGHT) {
+        	head.y=0;
+        }
+        if(head.x<0) {
+        	head.x=WIDTH;
+        }
+        if(head.x>WIDTH) {
+        	head.x=0;
+        }
 	}
 
 	void eat() {
@@ -170,8 +177,8 @@ public class LeagueSnake extends PApplet {
 		
 		if (head.x == foodX && head.y == foodY) {
 			foodEaten ++;
-			dropFood();
 			tail.add(new Segment(head.x, head.y));
+			dropFood();
 		}
 
 	}
