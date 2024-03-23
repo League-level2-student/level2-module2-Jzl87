@@ -7,8 +7,8 @@ import java.util.Random;
 import processing.core.PApplet;
 
 public class LeagueSnake extends PApplet {
-	static final int WIDTH = 800;
-	static final int HEIGHT = 800;
+	static final int WIDTH = 600;
+	static final int HEIGHT = 600;
 	ArrayList<Segment> tail = new ArrayList<Segment>();
 	
 	/*
@@ -45,8 +45,8 @@ public class LeagueSnake extends PApplet {
 	void dropFood() {
 		// Set the food in a new random location
 		
-		foodX = ran.nextInt(80) * 10;
-		foodY = ran.nextInt(80) * 10;
+		foodX = ran.nextInt(WIDTH/10) * 10;
+		foodY = ran.nextInt(HEIGHT/10) * 10;
 	}
 
 	/*
