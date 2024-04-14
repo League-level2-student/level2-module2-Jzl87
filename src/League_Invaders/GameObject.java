@@ -7,6 +7,7 @@ public class GameObject {
 	protected int width;
 	protected int height;
 	
+	
 	private int speed = 0;
 	public static boolean isActive = true;
 
@@ -23,9 +24,17 @@ public class GameObject {
 	public int getY () {
 		   return y;	
 		}
+	public boolean getActive () {
+		return isActive;
+	}
 	public void setSpeed (int x) {
 		speed = x;
 	}
+	
+	public void setActive (boolean active) {
+		isActive = active;
+	}
+	
 	public void update () {
 		
 	}
