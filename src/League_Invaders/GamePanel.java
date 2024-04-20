@@ -19,41 +19,39 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	final static int MENU = 0;
 	final static int GAME = 1;
 	final static int END = 2;
-	
+
 	public static BufferedImage image;
 	public static boolean needImage = true;
-	public static boolean gotImage = false;	
-	
+	public static boolean gotImage = false;
+
 	int currentState = MENU;
-	
+
 	Font titleFont;
 	Font scriptFont;
 
 	Timer frameDraw;
-	Timer alienSpawn;
-	
+
 	Rocketship rocket = new Rocketship(250, 700, 50, 50);
-	
+
 	ObjectManager manager = new ObjectManager(rocket);
-	
-	public void startGame () {
-		alienSpawn = new Timer(1000, manager);
-		alienSpawn.start();
+
+	public void startGame() {
+		manager.alienSpawn.start();
 	}
-	
+
 	public GamePanel() {
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		scriptFont = new Font("Arial", Font.PLAIN, 20);
 
 		frameDraw = new Timer(1000 / 60, this);
 		frameDraw.start();
-		
+
 		if (needImage) {
-		    loadImage ("space.png");
+			loadImage("space.png");
 		}
 	}
 
@@ -77,11 +75,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		currentState = GAME;
 		startGame();
 		manager.update();
+
+		if (!rocket.isActive) {
+			currentState++;
+		}
 	}
 
 	public void updateEndState() {
 		currentState = END;
-		alienSpawn.stop();
+		manager.alienSpawn.stop();
 	}
 
 	public void drawMenuState(Graphics g) {
@@ -98,8 +100,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void drawGameState(Graphics g) {
-	
-		g.drawImage(image, 0,0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
+
+		g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
 
 		if (gotImage) {
@@ -108,9 +110,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
 		}
-		
+
 		manager.draw(g);
-		
+
 	}
 
 	public void drawEndState(Graphics g) {
@@ -122,7 +124,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("GAME OVER", 100, 100);
 
 		g.setFont(scriptFont);
-		g.drawString("You killed" + " enemies", 150, 400);
+		g.drawString("You killed " + manager.getScore() + " enemies", 150, 400);
 		g.drawString("press ENTER to restart", 135, 500);
 	}
 
@@ -158,31 +160,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE && currentState == 1) {
 			manager.addProjectile(rocket.getProjectile());
 		}
-		
+
 		// VCERTICAL MOVEMENT
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			System.out.println("up");
-			if ((rocket.getY() -  Rocketship.speed) >= 0) {
-				rocket.up();
+			if ((rocket.getY() - Rocketship.speed) >= 0) {
+				rocket.up = true;
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			System.out.println("down");
 			if ((rocket.getY() + Rocketship.speed) < 730) {
-				rocket.down();
+				rocket.down = true;
 			}
 		}
 
 		// SIDEWASY MOVEMENT
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			System.out.println("Left");
-			if ((rocket.getX() -  Rocketship.speed) >= 0) {
-				rocket.left();
+			if ((rocket.getX() - Rocketship.speed) >= 0) {
+				rocket.left = true;
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			System.out.println("right");
 
-			if ((rocket.getX() +  Rocketship.speed) < 440) {
-				rocket.right();
+			if ((rocket.getX() + Rocketship.speed) < 440) {
+				rocket.right = true;
 			}
 		}
 
@@ -190,19 +192,39 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
 
+			rocket.up = false;
+
+		} 
+		
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			rocket.down = false;
+
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+			rocket.left = false;
+
+		} 
+		
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			rocket.right = false;
+
+		}
 	}
-	
+
 	void loadImage(String imageFile) {
-	    if (needImage) {
-	        try {
-	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-		    gotImage = true;
-	        } catch (Exception e) {
-	            
-	        }
-	        needImage = false;
-	    }
-	}	
-	
+		if (needImage) {
+			try {
+				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+				gotImage = true;
+			} catch (Exception e) {
+
+			}
+			needImage = false;
+		}
+	}
+
 }

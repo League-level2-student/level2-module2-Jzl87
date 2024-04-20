@@ -12,6 +12,11 @@ public class Rocketship extends GameObject {
 	public static boolean needImage = true;
 	public static boolean gotImage = false;
 
+	public boolean up = false;
+	public boolean down = false;
+	public boolean left = false;
+	public boolean right = false;
+
 	public Rocketship(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		if (needImage) {
@@ -30,22 +35,6 @@ public class Rocketship extends GameObject {
 		}
 	}
 
-	public void right() {
-		x += speed;
-	}
-
-	public void left() {
-		x -= speed;
-	}
-
-	public void up() {
-		y -= speed;
-	}
-
-	public void down() {
-		y += speed;
-	}
-
 	public Projectile getProjectile() {
 		return new Projectile(x + width / 2, y, 10, 10);
 	}
@@ -59,6 +48,21 @@ public class Rocketship extends GameObject {
 
 			}
 			needImage = false;
+		}
+	}
+
+	public void update() {
+		super.update();
+
+		if (up && y - speed > 0) {
+			y -= speed;
+		} else if (down && y + 35 < LeagueInvaders.HEIGHT-height) {
+			y += speed;
+		}
+		if (right && x +20 < LeagueInvaders.WIDTH-width) {
+			x += speed;
+		} else if (left && x - speed > 0) {
+			x -= speed;
 		}
 	}
 
