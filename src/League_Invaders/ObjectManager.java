@@ -23,7 +23,7 @@ public class ObjectManager implements ActionListener {
 	}
 	public ObjectManager(Rocketship rocket) {
 		this.rocket = rocket;
-		alienSpawn = new Timer(1000, this);
+		alienSpawn = new Timer(400, this);
 	}
 
 	public void checkCollision() {
@@ -56,7 +56,7 @@ public class ObjectManager implements ActionListener {
 		if (rocket.isActive) {
 			for (Alien alien : aliens) {
 				alien.update();
-				if (alien.getY() > LeagueInvaders.HEIGHT) {
+				if (alien.getY() > LeagueInvaders.HEIGHT || alien.getX() > LeagueInvaders.WIDTH - 20) {
 					alien.setActive(false);
 				}
 			}
@@ -73,7 +73,6 @@ public class ObjectManager implements ActionListener {
 
 	public void draw(Graphics g) {
 		rocket.draw(g);
-
 		for (Alien alien : aliens) {
 			alien.draw(g);
 		}
@@ -100,9 +99,9 @@ public class ObjectManager implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		addAlien();
-
+		
+		
 	}
 
 }
